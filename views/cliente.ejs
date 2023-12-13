@@ -1,0 +1,188 @@
+<%- include('Templates/head', {tituloWeb:'Clientes'})%>
+
+    <div class="col-sm-12 col-md-11 col-lg-11 col-xl-11 col-xxl-11" id="contenedor-tabla">
+        <div id="contenedor-header">
+            <form action="" method="post" class="form" id="form-buscador">
+                <input type="search" name="buscador" class="form-control me-2 text-start" placeholder="Buscar clientes">
+            </form>
+
+            <a href="modal fade" class="h4 text-start btn btn-primary ms-2" data-bs-toggle="modal"
+                data-bs-target="#crearModalCliente">Nuevo Cliente</a>
+
+            <div class="modal fade" id="crearModalCliente" tabindex="-1" aria-labelledby="CrearModallabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title text-start" id="CrearModallabel">Crear Cliente</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="/crearCliente" method="post">
+                            <div class="modal-body text-start">
+                                <label for="nombre" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" minlength="5" required
+                                    placeholder="Ingresar nombre">
+                            </div>
+                            <div class="modal-body text-start">
+                                <label for="apellido" class="form-label">Apellido:</label>
+                                <input type="text" class="form-control" id="apellido" name="apellido" minlength="5"
+                                    required placeholder="Ingresar apellido">
+                            </div>
+                            <div class="modal-body text-start">
+                                <label for="edad" class="form-label">Edad:</label>
+                                <input type="number" class="form-control" id="edad" name="edad" min="0" required
+                                    placeholder="Ingresar edad">
+                            </div>
+                            <div class="modal-body text-start">
+                                <label for="tipoIdentificacion" class="form-label">Tipo Identificacion:</label>
+                                <input type="text" class="form-control" id="tipoIdentificacion"
+                                    name="tipoIdentificacion" minlength="2" required
+                                    placeholder="Ingresar tipoIdentificacion">
+                            </div>
+                            <div class="modal-body text-start">
+                                <label for="numIdentificacion" class="form-label">Número Identificación:</label>
+                                <input type="number" class="form-control" id="numIdentificacion"
+                                    name="numIdentificacion" minlength="5" min="0" required
+                                    placeholder="Ingresar Número Identificación">
+                            </div>
+                            <div class="modal-body text-start">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email" minlength="10" required placeholder="Ingresar email">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Crear cliente</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <table class="table table-hover table-striped text-center" id="tabla">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Edad</th>
+                    <th scope="col">Tipo Identificación</th>
+                    <th scope="col">Num Identificación</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% clientes.forEach((cliente)=>{ %>
+                    <tr>
+                        <td>
+                            <%= cliente.nombre %>
+                        </td>
+                        <td>
+                            <%= cliente.apellido %>
+                        </td>
+                        <td>
+                            <%= cliente.edad %>
+                        </td>
+                        <td>
+                            <%= cliente.tipoIdentificacion %>
+                        </td>
+                        <td>
+                            <%= cliente.numIdentificacion %>
+                        </td>
+                        <td>
+                            <%= cliente.email %>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" name="switch" id="switch">
+                            </div>
+                        </td>
+                        <td>
+                            <a href="modal fade" class="h4 text-start btnEditarCliente btn-primary bi bi-pencil-square"
+                                data-bs-toggle="modal" data-bs-target="#ClienteEditarModal">
+                            </a>
+
+                            <a href="/eliminarCliente/<%= cliente._id %>" class="btn btn-danger bi bi-trash3"></a>
+                        </td>
+                    </tr>
+                    <% })%>
+            </tbody>
+        </table>
+        <div class="modal fade" id="ClienteEditarModal" tabindex="-1" aria-labelledby="editarModalCliente"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark text-white">
+                        <h5 class="modal-title text-start" id="editarModalCliente">Editar Cliente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-start">
+                        <form action="/editarCliente" method="post">
+                            <input type="text" name="idEditar" id="idEditar" hidden>
+                            <div class="modal-body text-start">
+                                <label for="nombreEditar" class="form-label">Nuevo Nombre:</label>
+                                <input type="text" class="form-control" id="nombreEditar" name="nombreEditar"
+                                    minlength="5" required>
+                            </div>
+                            <div class="modal-body text-start">
+                                <label for="apellidoEditar" class="form-label">Nuevo Apellido:</label>
+                                <input type="text" class="form-control" name="apellidoEditar" id="apellidoEditar"
+                                    minlength="5" required>
+                            </div>
+                            <div class="modal-body text-start">
+                                <label for="edadEditar" class="form-label">Nuevo Edad:</label>
+                                <input type="text" class="form-control" name="edadEditar" id="edadEditar" min="0"
+                                    required>
+                            </div>
+                            <div class="modal-body text-start">
+                                <label for="tipoIdentificacionEditar" class="form-label">Nuevo Tipo
+                                    Identificación:</label>
+                                <input type="text" class="form-control" name="tipoIdentificacionEditar"
+                                    id="tipoIdentificacionEditar" minlength="2" required>
+                            </div>
+                            <div class="modal-body text-start">
+                                <label for="numIdentificacionEditar" class="form-label">Nuevo Número
+                                    Identificación:</label>
+                                <input type="text" class="form-control" name="numIdentificacionEditar"
+                                    id="numIdentificacionEditar" minlength="5" min="0" required>
+                            </div>
+                            <div class="modal-body text-start">
+                                <label for="emailEditar" class="form-label">Nuevo Email:</label>
+                                <input type="email" class="form-control" name="emailEditar" id="emailEditar"
+                                    minlength="10" required>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-dark">Actualizar cliente</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <nav aria-label="Page navigation example" id="pagination">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <%- include('Templates/footer')%>
